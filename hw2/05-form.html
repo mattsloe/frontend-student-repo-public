@@ -10,19 +10,19 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" />
     <script defer src="05-form.js"></script>
   </head>
-  <body>
-    <main class="container mt-5">
+  <body class="bg-dark d-flex justify-content-between mt-5">
+    <main class="container mt-5 bg-white rounded mx-auto p-4 d-flex flex-column" style="width:60%;">
       <form action="#" method="post">
-        <h1>Exercise 05 - Form</h1>
-        <div class="form-group">
+        <h1 class="text-center">Exercise 05 - Form</h1>
+        <div class="form-group fw-bold mb-3">
           <label for="name">Full Name:</label>
           <input type="text" class="form-control" id="name" name="Full name" />
         </div>
-        <div class="form-group">
+        <div class="form-group fw-bold mb-3">
           <label for="email">Email:</label>
           <input type="email" class="form-control" id="email" name="Email" />
         </div>
-        <div class="form-group">
+        <div class="form-group fw-bold mb-3">
           <label for="status">Registration Status:</label>
           <select class="form-control" id="status" name="Registration Status">
             <option value="" disabled selected>Choose an Option</option>
@@ -30,7 +30,7 @@
             <option value="unregistered">Unregistered</option>
           </select>
         </div>
-        <fieldset class="form-group">
+        <fieldset class="form-group  mb-3">
           <legend>Have you taken any of the following courses?</legend>
           <div>
             <input type="checkbox" class="form-check-input" id="programmingLanguages" name="courses" value="Programming
@@ -48,12 +48,18 @@
             <label class="form-check-label" for="fullStack">Databases</label>
           </div>
         </fieldset>
-        <div class="form-group">
+        <div class="form-group fw-bold mb-3">
           <label for="anythingElse">Anything Else:</label>
           <textarea class="form-control" id="anythingElse" name="Anything Else" rows="4"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <button type="reset" class="btn btn-secondary">Reset</button>
+        <div class="row">
+          <div class="col">
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
+          </div>
+          <div class="col">
+            <button type="reset" class="btn btn-secondary w-100">Reset</button>
+          </div>
+        </div>
       </form>
     </main>
   </body>
