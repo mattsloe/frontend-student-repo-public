@@ -11,9 +11,49 @@
     <script defer src="05-form.js"></script>
   </head>
   <body>
-    <main>
-      <form>
+    <main class="container mt-5">
+      <form action="#" method="post">
         <h1>Exercise 05 - Form</h1>
+        <div class="form-group">
+          <label for="name">Full Name:</label>
+          <input type="text" class="form-control" id="name" name="Full name" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" name="Email" />
+        </div>
+        <div class="form-group">
+          <label for="status">Registration Status:</label>
+          <select class="form-control" id="status" name="Registration Status">
+            <option value="" disabled selected>Choose an Option</option>
+            <option value="registered">Registered</option>
+            <option value="unregistered">Unregistered</option>
+          </select>
+        </div>
+        <fieldset class="form-group">
+          <legend>Have you taken any of the following courses?</legend>
+          <div>
+            <input type="checkbox" class="form-check-input" id="programmingLanguages" name="courses" value="Programming
+                   Languages">
+            <label class="form-check-label" for="programmingLanguages">Programming Languages</label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="operatingSystems" name="courses"
+                   value="Operating Systems">
+            <label class="form-check-label" for="operatingSystems">Operating Systems</label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="fullStack" name="courses" value="Full Stack Web
+                   Development">
+            <label class="form-check-label" for="fullStack">Databases</label>
+          </div>
+        </fieldset>
+        <div class="form-group">
+          <label for="anythingElse">Anything Else:</label>
+          <textarea class="form-control" id="anythingElse" name="Anything Else" rows="4"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
       </form>
     </main>
   </body>
