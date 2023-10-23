@@ -12,7 +12,8 @@ function handleKeydown(event) {
   // retrieve the content to be searched
   const { textContent } = content;
   // find and highlight all occurrences of the search term in the text content
-  const highlightedTxt = textContent.replace(new RegExp(search, 'gi'), (match) => `<mark>${match}</mark>`);
+  const highlightedTxt = textContent.replace(new RegExp(search, 'gi'),
+   (match) => `<mark>${match}</mark>`);
   content.innerHTML = highlightedTxt;
 }
 input.addEventListener('input', handleKeydown);
