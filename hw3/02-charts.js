@@ -38,32 +38,43 @@ const fetchData = async () => {
   return characters;
 };
 
-function removeHousePrefix(houseName) {
-  // Check if the name starts with 'House' and remove it.
-  if (houseName.toLowerCase().startsWith('house ')) {
-    return houseName.slice(6).trim();
+function addHousePrefix(houseName,characters) {
+  // Check if the houseName already starts with 'House '
+  if (houseName.startsWith('House ')) {
+    return houseName;
   }
 
-  // If the name doesn't start with 'House', return it as-is.
+  // Check if there's any character in the dataset that has a house name that starts with 'House '
+  // and matches the provided houseName
+  const matchingHouse = characters.find(character =>
+    character.family === 'House ' + houseName
+  );
+
+  // If a matching house is found, return the house name with the 'House ' prefix
+  if (matchingHouse) {
+    return 'House ' + houseName;
+  }
+
+  // If no matching house is found, return the original houseName
   return houseName;
 }
 
 function checkForTypos(house) {
   if (house === 'Targaryn') {
-    return 'Targaryen';
+    return 'House Targaryen';
   }
   if (house === 'Lannister' || house === 'House Lanister' || house === 'Lanister') {
-    return 'Lannister';
+    return 'House Lannister';
   }
   if(house === 'Targaryan'){
-    return 'Targaryen';
+    return 'House Targaryen';
   }
   if(house === 'Unkown') {
     return 'Unknown';
   }
-  if(house === 'Lorath') {
-    return 'Lorathi';
-  }
+ if(house === 'Bolton' || house === 'Mormont'){
+   return `House ${house}`;
+ }
   return house;
 }
 let count = 0;
@@ -74,7 +85,7 @@ const groupByHouse = (characters) => {
     let house = char.family || 'Unknown';
     count++;
     // Handle typos or similar house names
-    house = removeHousePrefix(house, characters);
+    house = addHousePrefix(house, characters);
     house = checkForTypos(house);
 
     if (!grouped[house]) {
@@ -84,55 +95,43 @@ const groupByHouse = (characters) => {
     grouped[house]++;
   });
 
-  return grouped;
+  // Only include actual 'Houses'
+  const filteredData = {};
+  for (let house in grouped) {
+    if (house.startsWith('House ')) {
+      filteredData[house] = grouped[house];
+    }
+  }
+
+  return filteredData;
 };
 
-const renderChart = async () => {
-  const characters = await fetchData();
-  const grouped = groupByHouse(characters);
+const renderChart = () => {
+  fetchData().then(characters => {
+    const grouped = groupByHouse(characters);
 
-  const houses = Object.keys(grouped);
-  const counts = Object.values(grouped);
+    const houses = Object.keys(grouped);
+    const counts = Object.values(grouped);
 
-  const donutChart = document.querySelector('.donut-chart');
+    const donutChart = document.querySelector('.donut-chart');
 
-  new Chart(donutChart, {
-    type: 'doughnut',
-    data: {
-      labels: houses,
-      datasets: [
-        {
-          label: 'Characters per House',
-          data: counts,
-          backgroundColor: backgroundColors,
-          borderColor: borderColors,
-          borderWidth: 1,
-        },
-      ],
-    },
+    new Chart(donutChart, {
+      type: 'doughnut',
+      data: {
+        labels: houses,
+        datasets: [
+          {
+            label: 'Characters per House',
+            data: counts,
+            backgroundColor: backgroundColors,
+            borderColor: borderColors,
+            borderWidth: 1,
+          },
+        ],
+      },
+    });
   });
 };
 
 // Execute the function to render the chart
-renderChart().then(() => {});
-// const renderChart = () => {
-//   const donutChart = document.querySelector('.donut-chart');
-//
-//   new Chart(donutChart, {
-//     type: 'doughnut',
-//     data: {
-//       labels: ['label', 'label', 'label', 'label'],
-//       datasets: [
-//         {
-//           label: 'My First Dataset',
-//           data: [1, 12, 33, 5],
-//           backgroundColor: backgroundColors,
-//           borderColor: borderColors,
-//           borderWidth: 1,
-//         },
-//       ],
-//     },
-//   });
-// };
-//
-// renderChart();
+renderChart();
