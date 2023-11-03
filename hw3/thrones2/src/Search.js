@@ -1,5 +1,8 @@
 // create input, search through API, and display results
 import React, { useState, useEffect } from 'react';
+import NavBar from './NavBar';
+import './styles/Home.css';
+import './styles/Search.css';
 
 function Search() {
   const [inputValue, setInputValue] = useState('');
@@ -7,6 +10,7 @@ function Search() {
   const [filteredCharacters, setFilteredCharacters] = useState([]);
   const [error, setError] = useState(null);
 
+  // fetch characters from API
   useEffect(() => {
     const fetchCharacters = async () => {
       try {
@@ -20,6 +24,7 @@ function Search() {
     fetchCharacters();
   }, []);
 
+  // filter characters based on input
   const handleSearch = () => {
     const matchedCharacters = allCharacters.filter(character =>
       character.fullName.toLowerCase().includes(inputValue.toLowerCase())
@@ -35,26 +40,32 @@ function Search() {
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        value={inputValue}
-        onChange={e => setInputValue(e.target.value)}
-        placeholder="Search for a character..."
-      />
-      <button onClick={handleSearch}>Search</button>
+    <>
+      <NavBar />
+      <div className="search-input-container">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={e => setInputValue(e.target.value)}
+          placeholder="Search for a character..."
+          className="search-input"
+        />
+        <button onClick={handleSearch} className="search-button">Search</button>
+      </div>
 
-      {error && <p>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
 
-      <ul>
+      <div className="card-container">
         {filteredCharacters.map(character => (
-          <li key={character.id}>
-            <p>{character.name}</p>
-            <img src={character.imageUrl} alt={character.name} />
-          </li>
+          <div key={character.id} className="card">
+            <img src={character.imageUrl} alt={character.fullName} />
+            <div className="card-info">
+              <p>{character.fullName}</p>
+            </div>
+          </div>
         ))}
-      </ul>
-    </div>
+      </div>
+    </>
   );
 }
 

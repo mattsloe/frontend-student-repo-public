@@ -1,0 +1,47 @@
+.search-input-container {
+    display: flex;
+    justify-content: center; /* Aligns horizontally */
+    align-items: center; /* Aligns vertically */
+    padding: 20px;
+}
+
+.search-input-container {
+    margin-bottom: 1rem;
+}
+
+.search-input {
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+    flex-grow: 0;
+}
+
+.search-button {
+    padding: 0.5rem 1rem;
+}
+
+.error-message {
+    color: red;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center; /* This centers the cards in the container */
+}
+
+.card {
+    width: 200px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin-bottom: 1rem; /* Add space below each card */
+}
+
+.card img {
+    width: 100%;
+    display: block; /* Ensures no extra space below the image */
+}
+
+.card-info {
+    padding: 10px;
+    text-align: center;
+}
