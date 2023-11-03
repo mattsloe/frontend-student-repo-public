@@ -1,3 +1,5 @@
+// info on filter()
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
 const backgroundColors = [
   'rgba(54, 162, 235, 0.8)',
   'rgba(255, 206, 86, 0.8)',
@@ -29,24 +31,107 @@ const borderColors = [
 // url for the Thrones API
 const url = 'https://thronesapi.com/api/v2/Characters';
 
-const renderChart = () => {
-  const donutChart = document.querySelector('.donut-chart');
+// Fetch and process the characters data
+const fetchData = async () => {
+  const response = await fetch(url);
+  const characters = await response.json();
+  return characters;
+};
 
-  new Chart(donutChart, {
-    type: 'doughnut',
-    data: {
-      labels: ['label', 'label', 'label', 'label'],
-      datasets: [
-        {
-          label: 'My First Dataset',
-          data: [1, 12, 33, 5],
-          backgroundColor: backgroundColors,
-          borderColor: borderColors,
-          borderWidth: 1,
-        },
-      ],
-    },
+function addHousePrefix(houseName,characters) {
+  // Check if the houseName already starts with 'House '
+  if (houseName.startsWith('House ')) {
+    return houseName;
+  }
+
+  // Check if there's any character in the dataset that has a house name that starts with 'House '
+  // and matches the provided houseName
+  const matchingHouse = characters.find(character =>
+    character.family === 'House ' + houseName
+  );
+
+  // If a matching house is found, return the house name with the 'House ' prefix
+  if (matchingHouse) {
+    return 'House ' + houseName;
+  }
+
+  // If no matching house is found, return the original houseName
+  return houseName;
+}
+
+function checkForTypos(house) {
+  if (house === 'Targaryn') {
+    return 'House Targaryen';
+  }
+  if (house === 'Lannister' || house === 'House Lanister' || house === 'Lanister') {
+    return 'House Lannister';
+  }
+  if(house === 'Targaryan'){
+    return 'House Targaryen';
+  }
+  if(house === 'Unkown') {
+    return 'Unknown';
+  }
+ if(house === 'Bolton' || house === 'Mormont'){
+   return `House ${house}`;
+ }
+  return house;
+}
+let count = 0;
+const groupByHouse = (characters) => {
+  const grouped = {};
+
+  characters.forEach(char => {
+    let house = char.family || 'Unknown';
+    count++;
+    // Handle typos or similar house names
+    house = addHousePrefix(house, characters);
+    house = checkForTypos(house);
+
+    if (!grouped[house]) {
+      grouped[house] = 0;
+    }
+
+    grouped[house]++;
+  });
+
+  // Only include actual 'Houses'
+  const filteredData = {};
+  for (let house in grouped) {
+    if (house.startsWith('House ')) {
+      filteredData[house] = grouped[house];
+    }
+  }
+
+  return filteredData;
+};
+
+const renderChart = () => {
+  fetchData().then(characters => {
+    const grouped = groupByHouse(characters);
+
+    const houses = Object.keys(grouped);
+    const counts = Object.values(grouped);
+
+    const donutChart = document.querySelector('.donut-chart');
+
+    new Chart(donutChart, {
+      type: 'doughnut',
+      data: {
+        labels: houses,
+        datasets: [
+          {
+            label: 'Characters per House',
+            data: counts,
+            backgroundColor: backgroundColors,
+            borderColor: borderColors,
+            borderWidth: 1,
+          },
+        ],
+      },
+    });
   });
 };
 
+// Execute the function to render the chart
 renderChart();
