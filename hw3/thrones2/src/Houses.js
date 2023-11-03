@@ -1,5 +1,3 @@
-// Donut chart page
-// Welcome message
 import React from 'react';
 import './styles/Home.css';
 import NavBar from './NavBar';
